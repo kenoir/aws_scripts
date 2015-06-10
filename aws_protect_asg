@@ -1,17 +1,25 @@
 #!/bin/bash
- 
+
+if [ "$1" == "-h" ]; then
+    echo "This script enables or disables termination protection for all the instances in an autoscaling group."
+    echo
+    echo "Usage: `basename $0` autoscaling-group-name disable [optional]"
+    echo
+    exit 0
+fi
+
 ASG=$1
 DISABLE=$2
- 
+
 ACTION="--disable-api-termination"
 INSTANCES=`aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $ASG --profile media-service | jq '.AutoScalingGroups[0].Instances[].InstanceId' | xargs`
- 
+
 if [ "$2" = "disable" ]; then
     ACTION="--no-disable-api-termination"
 fi
- 
+
 for i in $INSTANCES; do
     echo "Running 'aws ec2 modify-instance-attribute --instance-id $i $ACTION --profile media-service'"
- 
+
     aws ec2 modify-instance-attribute --instance-id $i $ACTION --profile media-service
 done

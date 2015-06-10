@@ -1,4 +1,12 @@
-#/bin/bash
+#!/bin/bash
+
+if [ "$1" == "-h" ]; then
+    echo "This script disables termination protection for an instance and then terminates it."
+    echo
+    echo "Usage: `basename $0` instance-id decrement [optional]"
+    echo
+    exit 0
+fi
 
 INSTANCE_ID=$1
 ASG_NAME=`aws autoscaling describe-auto-scaling-instances --instance-ids i-0da256f4 | jq -r ".AutoScalingInstances[0].AutoScalingGroupName"`
