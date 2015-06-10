@@ -13,6 +13,7 @@ ASG_NAME=`aws autoscaling describe-auto-scaling-instances --instance-ids i-0da25
 
 echo "Terminating $INSTANCE_ID in $ASG_NAME"
 
+ACTION="--no-should-decrement-desired-capacity"
 if [ "$2" = "decrement" ]; then
     echo "This action will decrement desired capacity"
     ACTION="--should-decrement-desired-capacity"
